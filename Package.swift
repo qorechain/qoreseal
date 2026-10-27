@@ -18,7 +18,7 @@ import Foundation
 import PackageDescription
 
 let releaseVersion = "0.1.0"
-let releaseChecksum = "0000000000000000000000000000000000000000000000000000000000000000"
+let releaseChecksum = "922f353e720e12af91c1aa38d3fb6d5a7c049c53e91f847d2cc44c3ab1dc959e"
 
 let localFFIPath = "swift/QoreSealFFI.xcframework"
 let packageDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().path
