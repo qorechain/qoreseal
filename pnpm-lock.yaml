@@ -39,6 +39,36 @@ importers:
         specifier: 3.2.7
         version: 3.2.7(@types/node@22.20.5)(yaml@2.9.1)
 
+  examples/private-rollup:
+    dependencies:
+      '@qorechain/qoreseal':
+        specifier: workspace:^
+        version: link:../../packages/ts
+
+  examples/register-and-encrypt:
+    dependencies:
+      '@cosmjs/amino':
+        specifier: 0.39.0
+        version: 0.39.0
+      '@cosmjs/proto-signing':
+        specifier: 0.39.0
+        version: 0.39.0
+      '@qorechain/qoreseal':
+        specifier: workspace:^
+        version: link:../../packages/ts
+      '@qorechain/qoresign':
+        specifier: 0.1.0
+        version: 0.1.0
+      cosmjs-types:
+        specifier: 0.11.0
+        version: 0.11.0
+
+  examples/seal-and-open:
+    dependencies:
+      '@qorechain/qoreseal':
+        specifier: workspace:^
+        version: link:../../packages/ts
+
   packages/ts:
     dependencies:
       '@noble/ciphers':
