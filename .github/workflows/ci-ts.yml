@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: Apache-2.0
+name: ci-ts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 9.12.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r build
+      - run: pnpm -r lint
+      - run: pnpm -r typecheck
+      - run: pnpm -r test
+      - name: Vectors are up to date
+        run: node scripts/gen-vectors.mjs && git diff --exit-code vectors/
+      - name: Offline examples run
+        run: |
+          pnpm -C examples/seal-and-open start
+          pnpm -C examples/private-rollup start
+      - name: Package contents
+        working-directory: packages/ts
+        run: |
+          pnpm pack --pack-destination "$RUNNER_TEMP"
+          tar -tzf "$RUNNER_TEMP"/qorechain-qoreseal-*.tgz | tee "$RUNNER_TEMP/files.txt"
+          ! grep -E '\.map$' "$RUNNER_TEMP/files.txt"
