@@ -1,0 +1,38 @@
+[package]
+name = "qorechain-qoreseal"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+authors = ["QoreChain Association"]
+repository = "https://github.com/qorechain/qoreseal"
+homepage = "https://github.com/qorechain/qoreseal"
+documentation = "https://docs.rs/qorechain-qoreseal"
+description = "ML-KEM-1024 (FIPS 203) encryption of data to QoreChain accounts: hybrid X25519 mode, multi-recipient envelopes, recipient cards and epoch keys."
+readme = "README.md"
+keywords = ["qorechain", "ml-kem", "fips-203", "encryption", "x25519"]
+categories = ["cryptography"]
+# The vector tests read ../../vectors at run time, outside the crate.
+exclude = ["tests/vectors.rs"]
+
+[lib]
+name = "qoreseal"
+path = "src/lib.rs"
+
+[dependencies]
+qorechain-pqc = "=0.2.3"
+qorechain-qoresign = "=0.1.0"
+fips203 = { version = "=0.4.3", default-features = false, features = ["default-rng", "ml-kem-1024"] }
+x25519-dalek = { version = "=2.0.1", features = ["static_secrets"] }
+aes-gcm = { version = "=0.10.3", default-features = false, features = ["aes", "alloc"] }
+hkdf = "=0.12.4"
+sha2 = "=0.10.9"
+sha3 = "=0.10.8"
+bip39 = { version = "=2.2.2", default-features = false, features = ["std"] }
+getrandom = "=0.2.17"
+base64 = "=0.22.1"
+hex = "=0.4.3"
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = "=1.0.154"
+thiserror = "=2.0.18"
+
+[dev-dependencies]

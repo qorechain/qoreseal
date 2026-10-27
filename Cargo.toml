@@ -1,0 +1,6 @@
+[workspace]
+resolver = "2"
+members = ["crates/qoreseal", "crates/qoreseal-ffi"]
+
+[profile.release]
+strip = "debuginfo"
