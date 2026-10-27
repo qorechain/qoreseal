@@ -42,7 +42,6 @@ assert_eq!(plaintext, b"amount due: 120 QOR");
 
 // ML-KEM-1024 only: needs just the key on chain.
 args.mode = SealMode::Mlkem;
-# Ok::<(), qoreseal::Error>(())
 ```
 
 Publish your key with `build_register_kem_key_message(address, &keys.mlkem_public_key)`
