@@ -42,6 +42,8 @@ const mnemonicVectors = [
   { mnemonic: MNEMONIC, passphrase: "", index: 0 },
   { mnemonic: MNEMONIC, passphrase: "", index: 1 },
   { mnemonic: MNEMONIC, passphrase: "TREZOR", index: 0 },
+  // NFC input: implementations must normalize the passphrase to NFKD (BIP-39).
+  { mnemonic: MNEMONIC, passphrase: "p\u00e4ssw\u00f6rd", index: 7 },
 ].map((m) => {
   const seed = qs.sealSeedFromMnemonic(m);
   return { ...m, seed: hex(seed), mlkemPublicKeySha3: hex(sha3_256(qs.sealKeysFromSeed(seed).mlkemPublicKey)) };

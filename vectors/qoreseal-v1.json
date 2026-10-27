@@ -47,6 +47,13 @@
       "index": 0,
       "seed": "f6eb3cfd4702d7eaec72e327288a24294c42f77322a22f5b6f037e610d90048e",
       "mlkemPublicKeySha3": "68dfa50aae5bfc469f2c60af55526146aef5af55daf9a61f2c0de73d35655fab"
+    },
+    {
+      "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+      "passphrase": "pässwörd",
+      "index": 7,
+      "seed": "5d5b3079771edb12b05ffb7882481038a8dc5a24793ccea783722d7e0f255d9d",
+      "mlkemPublicKeySha3": "c7edcc1137fec73495565a54d18aabdc1319bc2614edac0994768d43c5c0b97d"
     }
   ],
   "encapsulation": {
