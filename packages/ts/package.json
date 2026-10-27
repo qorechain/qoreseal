@@ -1,0 +1,97 @@
+{
+  "name": "@qorechain/qoreseal",
+  "version": "0.1.0",
+  "description": "ML-KEM-1024 (FIPS 203) encryption of data to QoreChain accounts, with an X25519 hybrid mode, multi-recipient envelopes and epoch keys for private groups and sidechains.",
+  "license": "Apache-2.0",
+  "author": "QoreChain Association",
+  "homepage": "https://github.com/qorechain/qoreseal#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qorechain/qoreseal.git",
+    "directory": "packages/ts"
+  },
+  "bugs": {
+    "url": "https://github.com/qorechain/qoreseal/issues"
+  },
+  "keywords": [
+    "qorechain",
+    "ml-kem",
+    "fips-203",
+    "post-quantum",
+    "encryption",
+    "x25519",
+    "aes-gcm",
+    "rollup"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./network": {
+      "import": {
+        "types": "./dist/network.d.ts",
+        "default": "./dist/network.js"
+      },
+      "require": {
+        "types": "./dist/network.d.cts",
+        "default": "./dist/network.cjs"
+      }
+    },
+    "./testing": {
+      "import": {
+        "types": "./dist/testing.d.ts",
+        "default": "./dist/testing.js"
+      },
+      "require": {
+        "types": "./dist/testing.d.cts",
+        "default": "./dist/testing.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "lint": "eslint src test",
+    "typecheck": "tsc --noEmit",
+    "docs": "typedoc"
+  },
+  "dependencies": {
+    "@noble/ciphers": "2.4.0",
+    "@noble/curves": "2.4.0",
+    "@noble/hashes": "2.4.0",
+    "@noble/post-quantum": "0.7.1",
+    "@qorechain/pqc": "0.2.3",
+    "@qorechain/qoresign": "0.1.0",
+    "@scure/base": "2.4.0",
+    "@scure/bip39": "2.4.0"
+  },
+  "devDependencies": {
+    "@cosmjs/amino": "0.39.0",
+    "@cosmjs/proto-signing": "0.39.0",
+    "cosmjs-types": "0.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
