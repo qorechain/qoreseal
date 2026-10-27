@@ -1,0 +1,46 @@
+QoreSeal
+Copyright 2026 QoreChain Association
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+It depends on the following third-party software, each under its own license:
+
+TypeScript package (@qorechain/qoreseal)
+  @qorechain/pqc            Apache-2.0  QoreChain Association
+  @qorechain/qoresign       Apache-2.0  QoreChain Association
+  @noble/post-quantum       MIT         Paul Miller
+  @noble/curves             MIT         Paul Miller
+  @noble/hashes             MIT         Paul Miller
+  @noble/ciphers            MIT         Paul Miller
+  @scure/base               MIT         Paul Miller
+  @scure/bip39              MIT         Patricio Palladino, Paul Miller
+
+Rust crate (qorechain-qoreseal)
+  qorechain-pqc             Apache-2.0  QoreChain Association
+  qorechain-qoresign        Apache-2.0  QoreChain Association
+  fips203                   MIT OR Apache-2.0  Eric Schorn
+  x25519-dalek, curve25519-dalek   BSD-3-Clause  dalek-cryptography
+  aes-gcm, aes, ghash, hkdf, hmac, sha2, sha3   MIT OR Apache-2.0  RustCrypto
+  getrandom, rand_core      MIT OR Apache-2.0
+  bip39                     CC0-1.0     rust-bitcoin
+  base64, hex, serde, serde_json, thiserror, zeroize   MIT OR Apache-2.0
+  unicode-normalization, unicode-ident        Unicode-3.0 (transitive)
+  (and the dependencies of qorechain-qoresign, listed in its NOTICE)
+
+Swift and Kotlin bindings (built from crates/qoreseal-ffi)
+  uniffi                    MPL-2.0     Mozilla (runtime support compiled into the native library and the generated bindings)
+  JNA                       Apache-2.0 (dual-licensed Apache-2.0 / LGPL-2.1, used under Apache-2.0)
+
+Python package (qorechain-qoreseal, built from crates/qoreseal-ffi)
+  uniffi                    MPL-2.0     Mozilla (runtime support compiled into the native library and the generated bindings)
+  maturin                   MIT OR Apache-2.0  PyO3 (build tool only, not distributed)
+
+Go module (github.com/qorechain/qoreseal/go)
+  github.com/qorechain/qorechain-pqc/go      Apache-2.0  QoreChain Association
+  github.com/qorechain/qoresign/go           Apache-2.0  QoreChain Association
+  github.com/cloudflare/circl                BSD-3-Clause
+  github.com/cosmos/go-bip39                 MIT
+  golang.org/x/crypto, golang.org/x/text, golang.org/x/sys   BSD-3-Clause
+  (and the dependencies of github.com/qorechain/qoresign/go)
+
+The MPL-2.0 files of uniffi are used unmodified; their source is available at https://github.com/mozilla/uniffi-rs.

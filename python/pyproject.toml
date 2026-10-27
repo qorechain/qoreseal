@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: Apache-2.0
+[build-system]
+requires = ["maturin==1.15.0"]
+build-backend = "maturin"
+
+[project]
+name = "qorechain-qoreseal"
+version = "0.1.0"
+description = "ML-KEM-1024 (FIPS 203) encryption of data to QoreChain accounts: hybrid X25519 mode, multi-recipient envelopes, recipient cards and epoch keys."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+authors = [{ name = "QoreChain Association" }]
+keywords = ["qorechain", "ml-kem", "fips-203", "encryption", "x25519", "post-quantum"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Rust",
+    "Topic :: Security :: Cryptography",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/qorechain/qoreseal"
+Repository = "https://github.com/qorechain/qoreseal"
+Documentation = "https://github.com/qorechain/qoreseal/tree/main/python"
+Changelog = "https://github.com/qorechain/qoreseal/blob/main/CHANGELOG.md"
+Issues = "https://github.com/qorechain/qoreseal/issues"
+
+[tool.maturin]
+bindings = "uniffi"
+manifest-path = "../crates/qoreseal-ffi/Cargo.toml"
+module-name = "qoreseal._ffi"
+python-source = "."
+locked = true
+strip = true
+# LICENSE and NOTICE are copied from the repository root by
+# scripts/build-python-wheels.sh and the release workflow.
+include = [
+    { path = "LICENSE", format = "sdist" },
+    { path = "NOTICE", format = "sdist" },
+]
+
+[tool.maturin.sbom]
+# The Rust SBOM records build-machine paths.
+rust = false

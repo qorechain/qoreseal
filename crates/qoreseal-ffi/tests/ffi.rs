@@ -59,7 +59,7 @@ fn envelopes_cards_and_batches() {
             rs,
             h(&e["plaintext"]),
             h(&e["entropy"]),
-            h(&e["aad"]),
+            Some(h(&e["aad"])),
             mode(&e["mode"]),
             e["anonymous"].as_bool().unwrap(),
         )
@@ -72,7 +72,7 @@ fn envelopes_cards_and_batches() {
                 s(&v["purpose"]),
                 env.clone(),
                 keys[i].clone(),
-                h(&e["aad"]),
+                Some(h(&e["aad"])),
             )
             .unwrap();
             assert_eq!(out, h(&e["plaintext"]));
@@ -85,7 +85,7 @@ fn envelopes_cards_and_batches() {
             s(&v["purpose"]),
             h(&single["envelope"]),
             keys[1].clone(),
-            h(&single["aad"])
+            Some(h(&single["aad"]))
         )),
         "NOT_A_RECIPIENT"
     );
@@ -162,7 +162,7 @@ fn group_manager_object() {
             recipient: recipient_of(a.clone()),
         }],
         None,
-        vec![],
+        None,
     )
     .unwrap();
     let rot = mgr.add_member("b".into(), recipient_of(b.clone())).unwrap();

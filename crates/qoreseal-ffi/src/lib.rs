@@ -261,18 +261,19 @@ pub fn recipient_hint(salt: Vec<u8>, mlkem_public_key: Vec<u8>) -> Vec<u8> {
 // ---------------------------------------------------------------- envelopes
 
 /// Encrypt `plaintext` to one or more recipients. Default: hybrid mode, no AAD, hints on.
-#[uniffi::export(default(aad = [], mode = None, anonymous = false))]
+#[uniffi::export(default(aad = None, mode = None, anonymous = false))]
 pub fn seal_envelope(
     chain_id: String,
     purpose: String,
     recipients: Vec<SealRecipient>,
     plaintext: Vec<u8>,
-    aad: Vec<u8>,
+    aad: Option<Vec<u8>>,
     mode: Option<SealMode>,
     anonymous: bool,
 ) -> Result<Vec<u8>> {
     let rs = self::recipients(recipients);
     let mut args = core::SealArgs::new(&chain_id, &purpose, &rs, &plaintext);
+    let aad = aad.unwrap_or_default();
     args.aad = &aad;
     args.mode = mode.unwrap_or(SealMode::Hybrid).into();
     args.anonymous = anonymous;
@@ -280,20 +281,20 @@ pub fn seal_envelope(
 }
 
 /// Decrypt an envelope with the recipient's keys. `aad` must equal the sender's.
-#[uniffi::export(default(aad = []))]
+#[uniffi::export(default(aad = None))]
 pub fn open_envelope(
     chain_id: String,
     purpose: String,
     envelope: Vec<u8>,
     keys: SealKeyPair,
-    aad: Vec<u8>,
+    aad: Option<Vec<u8>>,
 ) -> Result<Vec<u8>> {
     Ok(core::open(
         &chain_id,
         &purpose,
         &envelope,
         &keys.into(),
-        &aad,
+        &aad.unwrap_or_default(),
     )?)
 }
 
@@ -671,13 +672,13 @@ impl EpochKeyManager {
 #[uniffi::export]
 impl EpochKeyManager {
     /// A manager at epoch 1, or at the last epoch of `history` (oldest first).
-    #[uniffi::constructor(default(mode = None, history = []))]
+    #[uniffi::constructor(default(mode = None, history = None))]
     pub fn new(
         chain_id: String,
         purpose: String,
         members: Vec<GroupMember>,
         mode: Option<SealMode>,
-        history: Vec<EpochKey>,
+        history: Option<Vec<EpochKey>>,
     ) -> Result<Self> {
         let inner = core::EpochKeyManager::new(
             &chain_id,
@@ -687,7 +688,11 @@ impl EpochKeyManager {
                 .into_iter()
                 .map(|m| (m.id, m.recipient.into()))
                 .collect(),
-            history.into_iter().map(Into::into).collect(),
+            history
+                .unwrap_or_default()
+                .into_iter()
+                .map(Into::into)
+                .collect(),
         )?;
         Ok(Self {
             inner: Mutex::new(inner),
@@ -850,19 +855,20 @@ pub fn batch_size(context_length: u32, data_length: u64) -> u64 {
 /// `seal_envelope` with all of its randomness given (spec section 9).
 /// For test vectors only: never use with real data.
 #[allow(clippy::too_many_arguments)]
-#[uniffi::export(default(aad = [], mode = None, anonymous = false))]
+#[uniffi::export(default(aad = None, mode = None, anonymous = false))]
 pub fn testing_seal_with_entropy(
     chain_id: String,
     purpose: String,
     recipients: Vec<SealRecipient>,
     plaintext: Vec<u8>,
     entropy: Vec<u8>,
-    aad: Vec<u8>,
+    aad: Option<Vec<u8>>,
     mode: Option<SealMode>,
     anonymous: bool,
 ) -> Result<Vec<u8>> {
     let rs = self::recipients(recipients);
     let mut args = core::SealArgs::new(&chain_id, &purpose, &rs, &plaintext);
+    let aad = aad.unwrap_or_default();
     args.aad = &aad;
     args.mode = mode.unwrap_or(SealMode::Hybrid).into();
     args.anonymous = anonymous;
