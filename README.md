@@ -9,7 +9,7 @@ QoreSeal is an open-source library of the QoreChain Association, in TypeScript,
 Rust, Go, Swift, Kotlin/Java and Python, all byte-compatible through shared test
 vectors.
 
-> Status: 0.1.0, not yet released. The construction composes standard
+> Status: 0.1.0, released. The construction composes standard
 > primitives only and is pending an external review before 1.0. Read
 > [spec/qoreseal-v1.md](spec/qoreseal-v1.md) before relying on it.
 
@@ -63,7 +63,7 @@ Read this before you build on it:
 
 | Language | Package | Install |
 |---|---|---|
-| TypeScript | `@qorechain/qoreseal` | `npm install @qorechain/qoreseal` |
+| TypeScript | `@qorechain/qoreseal` | coming to npm with the next release; build from `packages/ts` meanwhile |
 | Rust | `qorechain-qoreseal` (library `qoreseal`) | `cargo add qorechain-qoreseal` |
 | Go | `github.com/qorechain/qoreseal/go` | `go get github.com/qorechain/qoreseal/go` |
 | Swift | `QoreSeal` (iOS 16+, macOS 13+) | Swift Package Manager, this repository |
