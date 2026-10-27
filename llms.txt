@@ -1,0 +1,39 @@
+# QoreSeal
+
+> ML-KEM-1024 (FIPS 203) encryption of data to QoreChain accounts, for dApps and private sidechains: hybrid ML-KEM-1024 + X25519 (default) or ML-KEM-1024-only envelopes, multi-recipient, recipient cards signed with QoreSign, epoch keys and an encrypted batch codec. TypeScript, Rust, Go, Swift, Kotlin, Python. Apache-2.0. Version 0.1.0, unreleased, construction pending external review.
+
+Limits: only the payload is confidential; addresses, amounts, timing, sizes and recipient counts stay public; no zero-knowledge proofs; envelopes are not signed; losing the seed or mnemonic loses the data.
+Chain: KEM key registry in qorechain.pqc.v1 (MsgRegisterKEMKey {sender, algorithm_id=2, public_key 1568 bytes}, MsgRemoveKEMKey {sender}, GET /qorechain/pqc/v1/kem/{address}), one key per account, registration authenticated by the hybrid transaction signature. Available on testnet (qorechain-diana, REST https://api-testnet.qore.host); on mainnet (qorechain-vladi) from the v3.2.5 upgrade. Refusals: codespace pqc, codes 250-254.
+Construction: per recipient ML-KEM-1024 encapsulation (+ X25519 in hybrid mode, combined as SHA3-256("qorechain-qoreseal-hybrid-v1" || ss_mlkem || ss_x25519 || ct_x25519 || pk_x25519)); HKDF-SHA-256 with info "qorechain-kem-v1|" + chainId + "|" + purpose and the envelope salt; AES-256-GCM wraps a random 32-byte data key; payload AES-256-GCM with a random 96-bit nonce and AAD = header || user AAD. Envelope magic "QSEL", text form "qoreseal:" + base64url.
+
+## Docs
+- [README](README.md): what it does and does not do, modes, packages
+- [Quickstart](docs/quickstart.md): register a key on testnet, encrypt to an address, decrypt
+- [Encrypt to an address](docs/guides/encrypt-to-an-address.md): modes, cards, chain id, purpose, AAD, every language
+- [Multi-recipient and auditor keys](docs/guides/multi-recipient-and-auditors.md)
+- [Private sidechain epochs with the RDK](docs/guides/private-sidechain-epochs.md)
+- [Key backup](docs/guides/key-backup.md)
+
+## Spec
+- [QoreSeal v1](spec/qoreseal-v1.md): primitives, modes, context strings, key derivation, envelope layout and error order, registry messages, recipient card, epoch keys, batch blob, test hooks, limits
+- [Test vectors](vectors/qoreseal-v1.json)
+
+## API (TypeScript, @qorechain/qoreseal)
+- generateSealKeys, sealKeysFromSeed, deriveSealKeys, sealSeedFromMnemonic, recipientOf, validateMlkemPublicKey
+- seal, open, parseEnvelope, envelopeSize, envelopeToText, envelopeFromText
+- signRecipientCard, recipientCardFields, recipientCardText, assembleRecipientCard, verifyRecipientCard
+- buildRegisterKemKeyMessage, buildRemoveKemKeyMessage, describeKemRegistryError, KEM_REGISTRY_ERRORS
+- EpochKeyManager, sealEpochKey, openEpochKey, PrivateBatchCodec, sealBatch, openBatch, parseBatchHeader
+- kdfInfo, deriveKey, mlkemEncapsulate, mlkemDecapsulate, x25519Agree, hybridSharedSecret, recipientHint
+- @qorechain/qoreseal/network: fetchKemKey, fetchMlkemPublicKey, resolveRecipient, sealToAddresses
+
+## Other languages
+- Rust (qorechain-qoreseal, lib qoreseal): seal(&SealArgs), open(chain_id, purpose, envelope, keys, aad), same names in snake_case
+- Go (github.com/qorechain/qoreseal/go): Seal(SealArgs), Open(OpenArgs), network.Client
+- Swift, Kotlin, Python (UniFFI over Rust): sealEnvelope / seal_envelope, openEnvelope / open_envelope, EpochKeyManager object
+- Errors: stable codes in every language (INVALID_ARGUMENT, INVALID_KEY, MALFORMED_ENVELOPE, MALFORMED_BATCH, UNSUPPORTED_VERSION, UNSUPPORTED_ALGORITHM, NOT_A_RECIPIENT, DECRYPTION_FAILED, RECIPIENT_NEEDS_X25519, CARD_INVALID, UNKNOWN_EPOCH, KEM_KEY_NOT_REGISTERED, KEM_REGISTRY_UNAVAILABLE, NETWORK_UNAVAILABLE)
+
+## Examples
+- [seal-and-open](examples/seal-and-open): offline, two recipients and an auditor, failure cases
+- [register-and-encrypt](examples/register-and-encrypt): testnet, register the key, sign a card, encrypt to the address, decrypt
+- [private-rollup](examples/private-rollup): offline, three members, join and removal, encrypted batches and anchor fields
